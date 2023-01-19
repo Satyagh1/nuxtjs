@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="container-fluid product-list-main">
+  <div class="container-fluid product-list-main">
     <div class="container-fluid product-heading">
       <div class="product-width product-count">
         <div class="items">
@@ -212,7 +212,7 @@
         />
       </div>
     </div>
-  </v-layout>
+  </div>
 </template>
 <script>
 import ProductList from "../components/ProductList.vue";
@@ -246,16 +246,18 @@ export default {
   },
   methods: {
     getsort(srt_code, srt_label) {
+      this.page=1;
       this.srt = srt_code;
       this.label = srt_label;
       this.$router
         .push({ query: { ...this.$route.query, sort: this.srt } })
-        .catch(() => {});
+        
     },
     rmByIndex(index) {
       this.selected.splice(index, 1);
+      this.filterPassing = this.$route.query.filter;
       this.filterPassing = "";
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "index" });
 
       for (let a in this.selected) {
         if (this.selected[this.selected.length - 1] === this.selected[a]) {
@@ -267,7 +269,6 @@ export default {
             .push({
               query: { ...this.$route.query, filter: this.filterPassing },
             })
-            .catch(() => {});
         } else {
           this.filterPassing = this.filterPassing.concat(
             this.selected[a].filter_code,
@@ -277,6 +278,7 @@ export default {
       }
     },
     selectAdd(filter_code, filter_value) {
+      console.log("noiaonvnibakvbu");
       this.page = 1;
       this.filterPassing = "";
       let isvalue = this.indexFilter(this.selected, filter_code, filter_value);
@@ -292,27 +294,26 @@ export default {
         obj["filter_code"] = filter_key;
 
         this.selected.push(obj);
+        console.log("nackajkc", this.selected);
       }
       for (let a in this.selected) {
+        console.log("first", a)
         if (this.selected[this.selected.length - 1] === this.selected[a]) {
-          this.filterPassing = this.filterPassing.concat(
-            "",
-            this.selected[a].filter_code
-          );
+          this.filterPassing = this.filterPassing.concat("",this.selected[a].filter_code );
           // this.$router.push({query: this.$route.query, filter: this.filterPassing })
           this.$router
             .push({
               query: { ...this.$route.query, filter: this.filterPassing },
             })
-            .catch(() => {});
-          this.filterPassing = this.$route.query.filter;
         } else {
           this.filterPassing = this.filterPassing.concat(
             this.selected[a].filter_code,
             ","
           );
         }
+            console.log(this.selected," oinckjabdvnavikbqekjevbn",this.filterPassing);
       }
+      
     },
     indexFilter(arr, value, code) {
       let index = arr.findIndex(
@@ -330,13 +331,17 @@ export default {
         this.showlist = index;
       }
     },
-    async fetch() {
+    async getData() {
       this.isLoader = true;
       fetch(
         `https://pim.wforwoman.com/pim/pimresponse.php/?service=category&store=1&url_key=top-wear-kurtas&page=${this.page}&count=${this.limit}&sort_by=${this.srt}&sort_dir=desc&filter=${this.filterPassing}`
       )
         .then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        })
         .then((data) => {
+          console.log('data',data)
           const list = data.result;
           this.result = list;
           if (this.result.count - this.dataCount >= this.limit) {
@@ -352,19 +357,20 @@ export default {
           this.Productsitem = [...this.Productsitem, ...list.products];
           this.isLoader = false;
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        
     },
     handleScroll(isVisible) {
       if (this.isvisible == isVisible) {
         this.page++;
-        this.fetch();
+        console.log(
+          "njakcbnkjbkjvbhjabjhbvjkb"
+        );
+        this.getData();
       } else return;
       // // this.isvisible = isVisible;
       // if (this.isvisible==isVisible) {
       //   this.page++;
-      //   this.fetch();
+      //   this.getData();
       // }
       // this.isvisible=true;
       //   return;
@@ -396,26 +402,8 @@ export default {
       this.$router.push({ name: "Home" });
     },
   },
-  watch: {
-    selected: {
-      handler() {
-        this.page == 1;
-        this.Productsitem = [];
-        this.fetch();
-      },
-      deep: true,
-    },
-    srt: {
-      handler(newVal, oldVal) {
-        if (newVal != oldVal) {
-          this.Productsitem = [];
-          this.fetch();
-        }
-      },
-      deep: true,
-    },
-  },
-  mounted() {
+  async fetch() {
+    this.getData()
     this.flag = true;
     this.label = "newest";
     if (this.$route.query.filter != undefined) {
@@ -430,8 +418,29 @@ export default {
       let b = this.$route.query.sort;
       this.getsort(b, b);
     } else {
-      this.fetch();
-    }
+      this.getData();
+      }
+  },
+  watch: {
+    selected: {
+      handler() {
+        this.page == 1;
+        this.Productsitem = [];
+        // this.getData();
+        console.log("main aaayayaa ");
+      },
+      deep: true,
+    },
+    srt: {
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.Productsitem = [];
+          console.log("main aaayayaa ");
+          this.getData();
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>

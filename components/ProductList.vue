@@ -30,6 +30,9 @@
         </div>
 </template>
 <script>
+import Vue from 'vue'
+import VueObserveVisibility from 'vue-observe-visibility';
+Vue.use(VueObserveVisibility);
 export default {
   name: "Product-List",
 props:['Productsitem','handleScroll','dataCountFlag',"isLoader"],

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="header">
+        <div>
             <TopNav/>
         </div>
         <div class="container">
             <nuxt/>
         </div>
-        <div class="footer">
+        <div>
             <Footer/>
         </div>
     </div>
