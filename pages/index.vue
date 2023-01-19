@@ -403,7 +403,6 @@ export default {
     },
   },
   async fetch() {
-    this.getData()
     this.flag = true;
     this.label = "newest";
     if (this.$route.query.filter != undefined) {
@@ -426,7 +425,7 @@ export default {
       handler() {
         this.page == 1;
         this.Productsitem = [];
-        // this.getData();
+        this.getData();
         console.log("main aaayayaa ");
       },
       deep: true,
