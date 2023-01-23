@@ -3,7 +3,7 @@
     <div class="container-fluid product-heading">
       <div class="product-width product-count">
         <div class="items">
-          <h1>{{ response.name }}</h1>
+          <h1>{{ responseData.name }}</h1>
           <p class="item_count font-bold">{{ result.count }} Item</p>
         </div>
       </div>
@@ -48,7 +48,7 @@
                 </strong>
                 <ul class="sort-list">
                   <li
-                    v-for="(sort, i) in response.sort"
+                    v-for="(sort, i) in responseData.sort"
                     :key="i"
                     :class="[sort.label == label ? 'liactive' : '']"
                     @click="getsort(sort.code, sort.label)"
@@ -67,7 +67,7 @@
                 <ul class="sort-dropdown">
                   <li class="heading font-bold limobilesort">SORT BY</li>
                   <li
-                    v-for="(sort, i) in response.sort"
+                    v-for="(sort, i) in responseData.sort"
                     :key="i"
                     :class="[
                       sort.label == label
@@ -115,7 +115,7 @@
                 ? 'filter-component active-filter'
                 : 'filter-component',
             ]"
-            v-for="(item, index) in response.filters"
+            v-for="(item, index) in responseData.filters"
             :key="index"
           >
             <a @click="toggleAccordion(index)" class="filter-box">
@@ -166,7 +166,7 @@
                 ? 'filter-component active-filter'
                 : 'filter-component',
             ]"
-            v-for="(item, index) in response.filters"
+            v-for="(item, index) in responseData.filters"
             :key="index"
           >
             <a @click="toggleAccordion(index)" class="filter-box">
@@ -205,7 +205,6 @@
       </div>
       <div :class="[isOpen ? 'product-page active' : 'product-page']">
         <ProductList
-          :isLoader="isLoader"
           :Productsitem="Productsitem"
           :handleScroll="handleScroll"
           :dataCountFlag="dataCountFlag"
@@ -216,7 +215,7 @@
 </template>
 <script>
 import ProductList from "../components/ProductList.vue";
-
+import axios from "axios";
 export default {
   components: {
     ProductList,
@@ -226,8 +225,7 @@ export default {
       page: 1,
       limit: 20,
       Productsitem: [],
-      response: [],
-      isLoader: false,
+      responseData: [],
       result: [],
       flag: false,
       isOpen: false,
@@ -246,12 +244,10 @@ export default {
   },
   methods: {
     getsort(srt_code, srt_label) {
-      this.page=1;
+      this.page = 1;
       this.srt = srt_code;
       this.label = srt_label;
-      this.$router
-        .push({ query: { ...this.$route.query, sort: this.srt } })
-        
+      this.$router.push({ query: { ...this.$route.query, sort: this.srt } });
     },
     rmByIndex(index) {
       this.selected.splice(index, 1);
@@ -265,10 +261,9 @@ export default {
             "",
             this.selected[a].filter_code
           );
-          this.$router
-            .push({
-              query: { ...this.$route.query, filter: this.filterPassing },
-            })
+          this.$router.push({
+            query: { ...this.$route.query, filter: this.filterPassing },
+          });
         } else {
           this.filterPassing = this.filterPassing.concat(
             this.selected[a].filter_code,
@@ -278,7 +273,6 @@ export default {
       }
     },
     selectAdd(filter_code, filter_value) {
-      console.log("noiaonvnibakvbu");
       this.page = 1;
       this.filterPassing = "";
       let isvalue = this.indexFilter(this.selected, filter_code, filter_value);
@@ -294,26 +288,30 @@ export default {
         obj["filter_code"] = filter_key;
 
         this.selected.push(obj);
-        console.log("nackajkc", this.selected);
       }
       for (let a in this.selected) {
-        console.log("first", a)
+        console.log("first", a);
         if (this.selected[this.selected.length - 1] === this.selected[a]) {
-          this.filterPassing = this.filterPassing.concat("",this.selected[a].filter_code );
+          this.filterPassing = this.filterPassing.concat(
+            "",
+            this.selected[a].filter_code
+          );
           // this.$router.push({query: this.$route.query, filter: this.filterPassing })
-          this.$router
-            .push({
-              query: { ...this.$route.query, filter: this.filterPassing },
-            })
+          this.$router.push({
+            query: { ...this.$route.query, filter: this.filterPassing },
+          });
         } else {
           this.filterPassing = this.filterPassing.concat(
             this.selected[a].filter_code,
             ","
           );
         }
-            console.log(this.selected," oinckjabdvnavikbqekjevbn",this.filterPassing);
+        console.log(
+          this.selected,
+          " oinckjabdvnavikbqekjevbn",
+          this.filterPassing
+        );
       }
-      
     },
     indexFilter(arr, value, code) {
       let index = arr.findIndex(
@@ -332,48 +330,44 @@ export default {
       }
     },
     async getData() {
-      this.isLoader = true;
-      fetch(
-        `https://pim.wforwoman.com/pim/pimresponse.php/?service=category&store=1&url_key=top-wear-kurtas&page=${this.page}&count=${this.limit}&sort_by=${this.srt}&sort_dir=desc&filter=${this.filterPassing}`
-      )
-        .then((res) => res.json())
-        .catch((error) => {
-          console.log(error);
-        })
-        .then((data) => {
-          console.log('data',data)
-          const list = data.result;
-          this.result = list;
-          if (this.result.count - this.dataCount >= this.limit) {
-            this.dataCountFlag = true;
-            this.dataCount += this.limit;
-          } else {
-            this.dataCountFlag = false;
+      try {
+        const response = await axios.get(
+          "https://pim.wforwoman.com/pim/pimresponse.php",
+          {
+            params: {
+              service: "category",
+              store: 1,
+              url_key: "top-wear-kurtas",
+              page: this.page,
+              count: this.limit,
+              sort_by: this.srt,
+              sort_dir: "desc",
+              filter: this.filterPassing,
+            },
           }
-          if (this.flag == true) {
-            this.response = list;
-            this.flag = false;
-          }
-          this.Productsitem = [...this.Productsitem, ...list.products];
-          this.isLoader = false;
-        })
-        
+        );
+        this.result = response.data.result;
+
+        if (this.result.count - this.dataCount >= this.limit) {
+          this.dataCountFlag = true;
+          this.dataCount += this.limit;
+        } else {
+          this.dataCountFlag = false;
+        }
+        if (this.flag == true) {
+          this.responseData = response.data.result;
+          this.flag = false;
+        }
+        this.Productsitem = [...this.Productsitem,...response.data.result.products, ];
+      } catch (err) {
+        console.error(err);
+      }
     },
     handleScroll(isVisible) {
       if (this.isvisible == isVisible) {
         this.page++;
-        console.log(
-          "njakcbnkjbkjvbhjabjhbvjkb"
-        );
         this.getData();
       } else return;
-      // // this.isvisible = isVisible;
-      // if (this.isvisible==isVisible) {
-      //   this.page++;
-      //   this.getData();
-      // }
-      // this.isvisible=true;
-      //   return;
     },
     checkbox_control(value) {
       let a =
@@ -417,8 +411,42 @@ export default {
       let b = this.$route.query.sort;
       this.getsort(b, b);
     } else {
-      this.getData();
+      try {
+        const response = await axios.get(
+          "https://pim.wforwoman.com/pim/pimresponse.php",
+          {
+            params: {
+              service: "category",
+              store: 1,
+              url_key: "top-wear-kurtas",
+              page: this.page,
+              count: this.limit,
+              sort_by: this.srt,
+              sort_dir: "desc",
+              filter: this.filterPassing,
+            },
+          }
+        );
+        this.result = response.data.result;
+
+        if (this.result.count - this.dataCount >= this.limit) {
+          this.dataCountFlag = true;
+          this.dataCount += this.limit;
+        } else {
+          this.dataCountFlag = false;
+        }
+        if (this.flag == true) {
+          this.responseData = response.data.result;
+          this.flag = false;
+        }
+        this.Productsitem = [
+          ...this.Productsitem,
+          ...response.data.result.products,
+        ];
+      } catch (err) {
+        console.error(err);
       }
+    }
   },
   watch: {
     selected: {
@@ -426,7 +454,6 @@ export default {
         this.page == 1;
         this.Productsitem = [];
         this.getData();
-        console.log("main aaayayaa ");
       },
       deep: true,
     },
@@ -434,12 +461,18 @@ export default {
       handler(newVal, oldVal) {
         if (newVal != oldVal) {
           this.Productsitem = [];
-          console.log("main aaayayaa ");
           this.getData();
         }
       },
       deep: true,
     },
+  },
+  beforeMount() {
+    // window.alert('hello');
+  },
+  mounted() {
+    console.log("hi  result ", this.result);
+    // window.alert('hello mounted');
   },
 };
 </script>
@@ -525,7 +558,7 @@ export default {
   overflow-x: scroll;
 }
 .sidebar-inner::-webkit-scrollbar {
-    width: 0px;
+  width: 0px;
 }
 .sidebar-inner ul {
   list-style: none;

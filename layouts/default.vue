@@ -1,8 +1,7 @@
 <template>
     <div>
-        <div>
-            <TopNav/>
-        </div>
+         <TopNav/>
+            <StickyNav />
         <div class="container">
             <nuxt/>
         </div>
@@ -14,10 +13,12 @@
 </template>
 <script>
 import TopNav from "../components/layout/TopNav.vue"
+import  StickyNav from "../components/layout/StickyNav.vue"
 import Footer from "../components/layout/Footer.vue"
 export default {
   components: {
     TopNav,
+    StickyNav,
     Footer
   },
 }

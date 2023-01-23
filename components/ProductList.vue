@@ -35,7 +35,7 @@ import VueObserveVisibility from 'vue-observe-visibility';
 Vue.use(VueObserveVisibility);
 export default {
   name: "Product-List",
-props:['Productsitem','handleScroll','dataCountFlag',"isLoader"],
+props:['Productsitem','handleScroll','dataCountFlag'],
 };
 </script>
 <style>
