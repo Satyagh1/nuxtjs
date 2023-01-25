@@ -7,11 +7,11 @@
           >
           <div class="slide-box">
             <div class="product-box">
-              <a href="/">
+              <nuxt-link :to="item.url_key">
                 <div class="image-single">
                   <img :src="item.image" alt="" />
                 </div>
-              </a>
+              </nuxt-link>
               <a href="/" class="wishlist"
                 ><img src="../static/Img/Heart.svg" alt=""
               /></a>
@@ -38,7 +38,7 @@ export default {
 props:['Productsitem','handleScroll','dataCountFlag'],
 };
 </script>
-<style>
+<style scoped>
 /* *********************** Product List Design *******************************/
 
 .product-container{

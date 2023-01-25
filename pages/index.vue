@@ -280,8 +280,8 @@ export default {
         this.rmByIndex(isvalue);
       } else {
         let filter_key = filter_code.concat("-", filter_value);
-        filter_key = filter_key.split(" ").join("%2B");
-        filter_key = filter_key.split("&").join("%26");
+        filter_key = filter_key.split(" ").join("+");
+        // filter_key = filter_key.split("&").join("%26");
         let obj = {};
         obj["filter_filter_code"] = filter_code;
         obj["filter_value"] = filter_value;
@@ -403,8 +403,8 @@ export default {
       let a = this.$route.query.filter.split(",");
       a.forEach((el) => {
         let val = el.split("-");
-        val[1] = val[1].split("%2B").join(" ");
-        val[1] = val[1].split("%26").join("&");
+        val[1] = val[1].split("+").join(" ");
+        // val[1] = val[1].split("%26").join("&");
         this.selectAdd(val[0], val[1]);
       });
     } else if (this.$route.query.sort != undefined) {

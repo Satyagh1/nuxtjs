@@ -2,7 +2,7 @@
     <div>
          <TopNav/>
             <StickyNav />
-        <div class="container">
+        <div>
             <nuxt/>
         </div>
         <div>

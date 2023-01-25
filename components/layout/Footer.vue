@@ -36,16 +36,16 @@
         <div class="footer-social-media_container">
           <h3>GIVE US A FOLLOW</h3>
           <div class="social-media">
-            <a href="#"><img src="../../static/Img/facebook.png" alt="image" /></a>
-            <a href="#"
+            <a href="/" target="_blank"><img src="../../static/Img/facebook.png" alt="image" /></a>
+            <a href="/" target="_blank"
               ><img src="../../static/Img/instagram.png" alt="image"
             /></a>
-            <a href="#"><img src="../../static/Img/twitter.png" alt="image" /></a>
-            <a href="#"><img src="../../static/Img/linkedin.png" alt="image" /></a>
-            <a href="#"
+            <a href="/" target="_blank"><img src="../../static/Img/twitter.png" alt="image" /></a>
+            <a href="/" target="_blank"><img src="../../static/Img/linkedin.png" alt="image" /></a>
+            <a href="/" target="_blank"
               ><img src="../../static/Img/pinterest.png" alt="image"
             /></a>
-            <a href="#"><img src="../../static/Img/youtube.png" alt="image" /></a>
+            <a href="/" target="_blank"><img src="../../static/Img/youtube.png" alt="image" /></a>
           </div>
         </div>
         <div class="d-none footer-copy-right">

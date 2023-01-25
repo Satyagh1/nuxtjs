@@ -42,12 +42,12 @@
           </ul>
         </div>
       </div>
-      <a href="#" class="logo d-none"
+      <nuxt-link to="/" class="logo d-none"
         ><img src="../../static/Img/logo.svg" alt=""
-      ></a>
-      <a href="#" class="mobile-logo"
+      ></nuxt-link>
+      <nuxt-link to="/" class="mobile-logo"
         ><img src="../../static/Img/smallLogo.png" alt=""
-      ></a>
+      ></nuxt-link>
       <div class="left">
         <div class="left-inner">
           <ul>
@@ -278,7 +278,7 @@ span.counter-number {
     display: flex;
   }
     .search-container input:focus {
-      width: 250px;
+      width: 225px;
              right: 12%;
     top: 25%;
     }
@@ -341,7 +341,7 @@ span.counter-number {
       margin-top: 16px;
     }
       .search-container input:focus {
-        width: 365px;
+        width: 180px;
             right: 28%;
     top: 28%;
       }
