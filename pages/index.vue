@@ -467,13 +467,6 @@ export default {
       deep: true,
     },
   },
-  beforeMount() {
-    // window.alert('hello');
-  },
-  mounted() {
-    console.log("hi  result ", this.result);
-    // window.alert('hello mounted');
-  },
 };
 </script>
 <style>
@@ -483,6 +476,7 @@ export default {
 }
 .container-fluid {
   width: 100%;
+  padding: 0px !important;
   margin-right: auto;
   margin-left: auto;
 }
@@ -806,10 +800,6 @@ li.women label {
 }
 .hidefilter {
   display: none;
-  transition: 0.5s all ease-out;
-}
-.active {
-  width: 100%;
   transition: 0.5s all ease-out;
 }
 .sort-product:hover .new img {

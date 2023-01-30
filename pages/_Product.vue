@@ -1,140 +1,200 @@
 <template>
-  <div class="product-detail-container">
-    <div class="row">
-      <div class="col-md-7 col-sm-12">
-        <div id="lightgallery" lg-uid="lg0">
-          <div
-            class="image-box"
-            v-for="(image, i) in this.result.gallery"
-            :key="i"
-          >
-            <img
-              :src="image.image"
-              data-src="https://admin.ahujasons.com/product/BR01272228/1500/BR01272228_1.jpg"
-            />
+  <div>
+    <div class="loader" v-if="loading">
+    <img src="../static/Img/giphy.gif" alt="" />
+    </div>
+    <div v-else>
+    <nav class="detail-page-breadcrumb" style="">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <nuxt-link to="/" class="nuxt-link-active">Home</nuxt-link>
+        </li>
+        <li class="breadcrumb-item active">{{result.name}}</li>
+      </ol>
+    </nav>
+    <div class="product-detail-container">
+      <div class="row">
+        <div class="col-md-7 col-sm-12">
+            <div
+              class="image-box"
+              v-for="(image, i) in result.gallery"
+              :key="i"
+            >
+            <a :href="image.image" class="lg-item">
+              <img :src="image.image"/>
+            </a>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12 content-section pdp__maininfo">
+          <h1 class="page-title">{{ result.name }}</h1>
+          <p class="masterSku">SKU: {{ result.sku }}</p>
+          <div class="price">
+            <p>
+              <span class="font-medium pr-2"> &#8377;{{
+                result.selling_price
+              }}</span>
+              <span class="old-price">&#8377;{{ result.price }}</span>
+            </p>
+            <p class="mrp-message">inclusive of all taxes</p>
+          </div>
+          <div class="size-container">
+            <p class="mrp-message">SELECT SIZE</p>
+            <div class="size-box">
+              <label
+                class="size select-one-size selected"
+                v-for="(sizeitem, i) in sizeChart"
+                :key="i"
+              >
+                <input type="radio" name="size" value="[object Object]" /><span
+                  >{{ sizeitem }}</span
+                ></label
+              >
+            </div>
+          </div>
+          <div class="add-to-cart-container">
+            <div class="add-to-cart-btns fixed">
+              <button
+                type="button"
+                id="product-addtocart-button"
+                title="Add to cart"
+                class="add-to-cart btn"
+              >
+                <i class="fa fa-shopping-basket"></i>
+                Add to cart
+              </button>
+              <button
+                type="button"
+                id="buy-now"
+                title="Wishlist"
+                class="buy-now btn"
+              >
+                <i class="fa fa-heart-o"></i> WISHLIST
+              </button>
+            </div>
+            <p
+              class="font-medium"
+              style="color: #02bb02; font-size: 12px; padding-top: 10px"
+            >
+              {{ result.stock_status }}
+            </p>
+          </div>
+          <div class="check-delivery">
+            <label>Delivery pin </label>
+            <div class="control">
+              <div class="pin-change-wrap">
+                <input
+                  type="text"
+                  maxlength="6"
+                  placeholder="Check pincode"
+                  value=""
+                  class="input-text"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="other-info">
+            <h3 class="font-medium">KNOW YOUR MAKEUP</h3>
+            <p class="description mt-2 mb-3">
+              {{ result.description }}
+            </p>
+            <div id="show_hide_product_attr_type" v-show="visibility">
+              <ul>
+                <li
+                  v-for="(item, i) in result.visible_attributes"
+                  :key="i"
+                >
+                  <span class="label font-medium">{{ item.label }}</span>
+                  <span data-th="Quantity" class="data">{{ item.value }}</span>
+                </li>
+              </ul>
+            </div>
+            <a class="show_more_attr" @click="changevisible()"
+              ><span> {{ moreDetail ? "More" : "Less" }}</span> Details <span :class="[moreDetail ? 'arrow down' : 'arrow up']"></span></a
+            >
           </div>
         </div>
       </div>
-      <div class="col-md-5 col-sm-12 content-section pdp__maininfo">
-        <h1 class="page-title">{{ result.name }}</h1>
-        <p class="masterSku">SKU: {{ result.sku }}</p>
-        <div class="price">
-          <p>
-            <span class="price font-medium pr-2">{{
-              result.selling_price
-            }}</span>
-            <span class="old-price">{{ result.price }}</span>
-          </p>
-          <p class="mrp-message">inclusive of all taxes</p>
-        </div>
-        <div class="size-container">
-          <p class="mrp-message">SELECT SIZE</p>
-          <div data-v-11788126="" class="size-box">
-            <label data-v-11788126="" class="size select-one-size selected" v-for="(sizeitem,i) in this.sizeChart" :key="i">
-              <input
-                data-v-11788126=""
-                type="radio"
-                name="size"
-                value="[object Object]"
-              /><span data-v-11788126="">{{ sizeitem }}</span></label>
-          </div>
-        </div>
-        <div class="add-to-cart-container">
-          <div class="add-to-cart-btns fixed">
-            <button
-              type="button"
-              id="product-addtocart-button"
-              title="Add to cart"
-              class="add-to-cart btn"
-            >
-              <i class="fa fa-shopping-basket"></i>
-              Add to cart
-            </button>
-            <button
-              type="button"
-              id="buy-now"
-              title="Wishlist"
-              class="buy-now btn"
-            >
-              <i class="fa fa-heart-o"></i> WISHLIST
-            </button>
-          </div>
-          <p
-            class="font-medium"
-            style="color: #02bb02; font-size: 12px; padding-top: 10px"
-          >
-            {{ result.stock_status }}
-          </p>
-        </div>
-        <div class="check-delivery">
-          <label>Delivery pin </label>
-          <div class="control">
-            <div class="pin-change-wrap">
-              <input
-                type="text"
-                maxlength="6"
-                placeholder="Check pincode"
-                value=""
-                class="input-text"
-              />
+      <div class="product-slider product-slider-similar">
+        <div class="product-section-main">
+          <div class="similar-products">
+            <h4 class="font-medium similar-head">Similar Products</h4>
+            <div class="product-container">
+              <ClientOnly>
+                <vueSlickcarousel
+                  v-bind="slickOptions"
+                  v-if="result.id_product"
+                >
+                  <div
+                    class="slide-box"
+                    v-for="(item, index) in result.similar_products"
+                    :key="index"
+                  >
+                    <div class="product-box">
+                      <nuxt-link :to="item.url_key">
+                        <div class="image-single">
+                          <img :src="item.image" alt="" />
+                        </div>
+                      </nuxt-link>
+                    </div>
+                    <div class="product-info">
+                      <p class="product-name">{{ item.name }}</p>
+                      <div class="price-slider">
+                        <p>
+                          <span class="price">Rs.{{ item.selling_price }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </vueSlickcarousel>
+              </ClientOnly>
             </div>
           </div>
         </div>
-        <div class="other-info">
-          <h3 class="font-medium">KNOW YOUR MAKEUP</h3>
-          <p class="description mt-2 mb-3">
-            {{ result.description }}
-          </p>
-          <div id="show_hide_product_attr_type" v-show="this.visibility">
-            <ul>
-              <li v-for="(item, i) in this.result.visible_attributes" :key="i">
-                <span class="label font-medium">{{ item.label }}</span>
-                <span data-th="Quantity" class="data">{{ item.value }}</span>
-              </li>
-            </ul>
-          </div>
-          <a class="show_more_attr" @click="changevisible()"
-            ><span> {{ moreDetail ? "More" : "Less" }}</span> Details
-            <i class="fa fa-angle-down"></i
-          ></a>
-          <!-- <a href="#" class="show_more_attr" 
-            >Less Details <i class="fa fa-angle-up"></i
-          ></a> -->
-        </div>
       </div>
     </div>
-    <vueSlickcarousel v-bind="slickOptions" v-if="this.result!=undefined">
-    <div v-for="(item, index) in this.result.similar_products" :key="index" >
-      <img :src="item.image"/>
-    </div>
-  </vueSlickcarousel>
   </div>
+</div>
 </template>
 <script>
 import axios from "axios";
-import 'vue-slick-carousel/dist/vue-slick-carousel.css'
-  import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
-import vueSlickcarousel from 'vue-slick-carousel'
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
+import vueSlickcarousel from "vue-slick-carousel";
+import Vue from 'vue'
+import lightgallery from 'lightgallery.js'
+import 'lightgallery.js/dist/css/lightgallery.css';
+
+Vue.use(lightgallery)
 export default {
   components: {
-    vueSlickcarousel
-    },
+    vueSlickcarousel,
+  },
   data() {
     return {
-      sizeChart:null,
+      loading:true,
+      sizeChart: null,
       result: [],
       itemurl: null,
       visibility: false,
       moreDetail: true,
       slickOptions: {
-        dots:false,
-        arrow:true,
-        infinite:true,
-        speed:3000,
-        autoplay:true,
+        dots: false,
+        arrow: false,
+        infinite: true,
+        speed: 1000,
+        autoplay: false,
         slidesToShow: 4,
-        slidesToScroll: 1
-      }
+        slidesToScroll: 1,
+        loop: true,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
+        ],
+      },
     };
   },
 
@@ -164,8 +224,8 @@ export default {
           }
         );
         this.result = response.data.result;
-        let regex =/(\d+)/g;
-this.sizeChart=this.result.size.match(regex);
+        let regex = /(\d+)/g;
+        this.sizeChart = this.result.size.match(regex);
         console.log(this.$route.params.Product);
         console.log(this.result);
       }
@@ -173,9 +233,58 @@ this.sizeChart=this.result.size.match(regex);
       console.error(err);
     }
   },
+  mounted () {
+    setTimeout(() => {
+      this.loading = false
+    }, 500)
+  }
 };
 </script>
-<style scoped>
+<style>
+/******************************** BreadCrumb-Design *****************************************/
+.loader{
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.8;
+  margin: auto;
+}
+.breadcrumb {
+
+  padding-top: 20px !important;
+    border-radius: inherit;
+    padding: 10px 25px;
+    background: transparent;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+}
+.breadcrumb li {
+    font-size: 14px;
+}
+.breadcrumb li.breadcrumb-item a {
+    color: #333;
+    text-transform: capitalize;
+    font-size: 12px;
+}
+a, a:hover {
+    color: #000;
+}
+.breadcrumb-item+.breadcrumb-item:before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: #6c757d;
+    content: "/";
+}
+.breadcrumb li.breadcrumb-item.active {
+    color: #000;
+    text-transform: capitalize;
+    font-family: "Jost-medium";
+    width: auto;
+}
+
+/*******************************Product Design************************************/
 .container-fluid {
   width: 100%;
   padding-right: 60px;
@@ -197,10 +306,7 @@ this.sizeChart=this.result.size.match(regex);
   display: flex;
   flex-wrap: wrap;
 }
-.col-md-7 {
-  flex: 0 0 58.333333%;
-  max-width: 58.333333%;
-}
+
 .product-detail-container .image-box {
   overflow: hidden;
   width: calc(50% - 10px);
@@ -216,7 +322,7 @@ this.sizeChart=this.result.size.match(regex);
   width: 100%;
 }
 .content-section {
-  width: 37%;
+  width: 40%;
   padding: 0 25px;
 }
 .product-detail-container .page-title {
@@ -235,6 +341,7 @@ this.sizeChart=this.result.size.match(regex);
 .product-detail-container .price p {
   font-size: 35px;
   margin: 0;
+
 }
 p {
   margin-top: 0;
@@ -258,45 +365,48 @@ p {
   display: block;
   margin: 0 10px 0 0;
   font-family: "Jost-medium";
+  padding-top: 10px;
 }
-.size-container{
+.size-container {
   margin-top: 15px;
 }
-.size-box{
+.size-box {
   margin-top: 15px;
 }
 
- label {
-    text-transform: uppercase;
-    color: #000;
-    font-size: 14px;
+label {
+  text-transform: uppercase;
+  color: #000;
+  font-size: 14px;
+  margin-bottom: 0.5rem !important;
 }
 .size-box .size input {
-    height: 0;
-    width: 0;
-    display: none;
+  height: 0;
+  width: 0;
+  display: none;
 }
-input[type=checkbox], input[type=radio] {
-    box-sizing: border-box;
-    padding: 0;
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
 }
 .size-box .size {
-    background: #fff;
-    padding: 4px 12px;
-    color: #000;
-    min-width: 10px;
-    display: inline-block;
-    outline: none;
-    border: 1px solid #000;
-    text-align: center;
-    font-size: 14px;
-    margin-right: 3px;
-    cursor: pointer;
+  background: #fff;
+  padding: 4px 8px;
+  color: #000;
+  min-width: 10px;
+  display: inline-block;
+  outline: none;
+  border: 1px solid #000;
+  text-align: center;
+  font-size: 14px;
+  margin-right: 3px;
+  cursor: pointer;
 }
 .size-box .size:hover {
-    border-color: #501337;
-    color: #fff;
-    background: #501337;
+  border-color: #501337;
+  color: #fff;
+  background: #501337;
 }
 .product-detail-container .add-to-cart-container {
   clear: both;
@@ -350,7 +460,19 @@ input[type=checkbox], input[type=radio] {
   position: relative;
   display: inline-block;
   vertical-align: inherit;
-  margin-top: -8px;
+  margin-top: -7px;
+  margin-right: 6px;
+}
+#buy-now .fa.fa-heart-o {
+  font-size: 0;
+  background-image: url(../static/Img/Heart.svg);
+  background-repeat: no-repeat;
+  height: 21px;
+  width: 22px;
+  background-size: 17px;
+  position: relative;
+  display: inline-block;
+  vertical-align: inherit;
 }
 #product-addtocart-button .fa.fa-shopping-basket,
 .size-chart-label a:after {
@@ -382,11 +504,19 @@ input[type=checkbox], input[type=radio] {
   font-family: "Jost-medium";
   color: #444;
 }
-.pin-change-wrap {
-  width: 80%;
+.control{
+  margin-top: 0.8rem;
 }
 .pin-change-wrap {
+  width: 80%;
   position: relative;
+}
+.check-delivery input.input-text {
+  font-size: 13px;
+  border: 1px solid hsla(0, 0%, 60%, 0.6);
+  padding: 0 9px;
+  border-radius: 5px;
+  width: 250px;
 }
 .check-delivery input.input-text {
   width: calc(100% - 72px);
@@ -402,41 +532,12 @@ input[type=checkbox], input[type=radio] {
   letter-spacing: 0.5px;
   padding: 0 15px;
 }
-.check-delivery input.input-text {
-  font-size: 13px;
-  border: 1px solid hsla(0, 0%, 60%, 0.6);
-  padding: 0 9px;
-  border-radius: 5px;
-  width: 250px;
-}
-.supplierInfo {
-  margin-top: 20px;
-}
-.supplierSection {
-  position: relative;
-  display: inline-block;
-}
-.supplierSection .supplierMain {
-  cursor: pointer;
-}
-.supplierMain {
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 0;
-  color: #000;
-  font-size: 14px;
-  border-radius: 5px;
-  float: left;
-  margin-right: 20px;
-}
-.product-detail-container .filter-info,
 .product-detail-container .other-info {
-  margin-top: 15px;
+  margin-top: 25px;
   float: left;
   width: 100%;
   margin-bottom: 0;
 }
-.product-detail-container .filter-info h3,
 .product-detail-container .other-info h3 {
   text-align: left;
   padding-right: 0;
@@ -457,6 +558,9 @@ input[type=checkbox], input[type=radio] {
   float: left;
   width: 100%;
   overflow: hidden;
+  margin-bottom: 1rem!important;
+    margin-top: 0.5rem!important;
+    line-height: 1.2rem;
 }
 #show_hide_product_attr_type {
   transition: all 0.5s;
@@ -465,14 +569,12 @@ input[type=checkbox], input[type=radio] {
   float: left;
   width: 100%;
 }
-.product-detail-container .filter-info ul,
 .product-detail-container .other-info ul {
   padding-left: 0;
   margin-bottom: 0;
   margin-top: 15px;
   list-style: none;
 }
-.product-detail-container .filter-info ul li,
 .product-detail-container .other-info ul li {
   list-style: none;
   vertical-align: top;
@@ -485,7 +587,6 @@ input[type=checkbox], input[type=radio] {
   border-bottom: 0;
   padding: 0 0 5px;
 }
-.product-detail-container .filter-info ul li .label,
 .product-detail-container .other-info ul li .label {
   float: left;
   width: 100%;
@@ -498,7 +599,6 @@ input[type=checkbox], input[type=radio] {
   margin-bottom: 5px;
   font-family: "Jost-medium";
 }
-.product-detail-container .filter-info ul li .data,
 .product-detail-container .other-info ul li .data {
   width: 65%;
   text-align: left;
@@ -515,16 +615,141 @@ input[type=checkbox], input[type=radio] {
   font-weight: 300;
   cursor: pointer;
 }
-.slick-slider .slick-next, .slick-slider .slick-prev {
-    background-color: transparent;
-    position: absolute;
-    border: none;
-    font-size: 0;
-    background-image: url(../static/Img/smilir-slide-icon.svg);
-    background-repeat: no-repeat;
-    background-size: 40px;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
+.arrow {
+  border: solid #ee1010;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 3px;
+  
+}
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  margin: 0px 0px -2px 1px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  margin: 0px 0px 3px 1px;
+}
+
+/*******************************************Similar Products Section***********************************/
+.product-slider-similar {
+  padding: 0 5%;
+  text-align: center !important;
+  margin-top: 1rem !important;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.product-section-main {
+  margin-right: 0;
+  margin-left: 0;
+}
+.similar-products {
+  width: 100% !important;
+  position: relative;
+}
+.similar-head {
+  margin-bottom: 1.5rem;
+  color: #252525;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-top: 0;
+}
+.slick-list,
+.slick-slider {
+  position: relative;
+  display: block;
+}
+.product-slider-similar .slick-prev.slick-arrow {
+  left: -40px;
+  transform: translateY(-50%);
+}
+.product-slider-similar .slick-next.slick-arrow {
+  right: -40px;
+  transform: translateY(-50%) rotate(179deg);
+}
+.product-slider-similar .slick-slider .slick-next,
+.product-slider-similar .slick-slider .slick-prev {
+  background-color: transparent ;
+  position: absolute ;
+  border: none;
+  top: 39%;
+  font-size: 0 !important;
+  background-image: url(../static/Img/smilir-slide-icon.svg) !important;
+  background-repeat: no-repeat !important;
+  background-size: 40px !important;
+  cursor: pointer !important;
+  width: 40px;
+  height: 40px;
+}
+.slick-slider .slick-prev,
+.slick-slider .slick-next {
+  z-index: 2;
+}
+.product-slider-similar .slick-slider .slick-prev:before {
+  font-size: 0;
+}
+.slick-prev:before,
+.slick-next:before {
+  opacity: 0;
+  color: transparent;
+}
+.similar-products .product-container {
+  display: block !important;
+}
+.slide-box .product-name {
+  margin-bottom: 10px !important;
+}
+.price-slider{
+  margin: 0;
+  padding: 0;
+}
+@media only screen and (min-width: 576px) {
+  .product-slider-similar {
+    max-width: 540px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .product-slider-similar {
+    max-width: 720px;
+  }
+  .col-md-7 {
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .col-sm-12 {
+    width: 100%;
+    padding: 0;
+  }
+  .product-slider-similar .slick-next.slick-arrow {
+    right: -18px;
+    transform: translateY(-50%) rotate(179deg);
+  }
+  .product-slider-similar .slick-prev.slick-arrow {
+    left: -18px;
+    transform: translateY(-50%);
+  }
+  .product-slider-similar .slick-slider .slick-next,
+  .product-slider-similar .slick-slider .slick-prev {
+    background-size: 25px !important;
+    top: 30%;
+    width: 25px;
+    height: 25px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .product-slider-similar {
+    max-width: 960px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .product-slider-similar {
+    max-width: 1140px;
+  }
 }
 </style>
