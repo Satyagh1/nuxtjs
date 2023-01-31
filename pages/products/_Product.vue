@@ -1,177 +1,178 @@
 <template>
   <div>
     <div class="loader" v-if="loading">
-    <img src="../static/Img/giphy.gif" alt="" />
+      <img src="../../static/Img/giphy.gif" alt="" />
     </div>
     <div v-else>
-    <nav class="detail-page-breadcrumb" style="">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <nuxt-link to="/" class="nuxt-link-active">Home</nuxt-link>
-        </li>
-        <li class="breadcrumb-item active">{{result.name}}</li>
-      </ol>
-    </nav>
-    <div class="product-detail-container">
-      <div class="row">
-        <div class="col-md-7 col-sm-12">
-            <div
-              class="image-box"
-              v-for="(image, i) in result.gallery"
-              :key="i"
-            >
-            <a :href="image.image" class="lg-item">
-              <img :src="image.image"/>
-            </a>
-            </div>
-        </div>
-        <div class="col-md-5 col-sm-12 content-section pdp__maininfo">
-          <h1 class="page-title">{{ result.name }}</h1>
-          <p class="masterSku">SKU: {{ result.sku }}</p>
-          <div class="price">
-            <p>
-              <span class="font-medium pr-2"> &#8377;{{
-                result.selling_price
-              }}</span>
-              <span class="old-price">&#8377;{{ result.price }}</span>
-            </p>
-            <p class="mrp-message">inclusive of all taxes</p>
-          </div>
-          <div class="size-container">
-            <p class="mrp-message">SELECT SIZE</p>
-            <div class="size-box">
-              <label
-                class="size select-one-size selected"
-                v-for="(sizeitem, i) in sizeChart"
+      <nav class="detail-page-breadcrumb" style="">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <nuxt-link to="/" class="nuxt-link-active">Home</nuxt-link>
+          </li>
+          <li class="breadcrumb-item active">{{ result.name }}</li>
+        </ol>
+      </nav>
+      <div class="product-detail-container">
+        <div class="row">
+          <client-only>
+            <div class="col-md-7 col-sm-12" id="lightgallery">
+              <div
+                class="image-box"
+                @click="gallerycontrol()"
+                v-for="(image, i) in result.gallery"
                 :key="i"
               >
-                <input type="radio" name="size" value="[object Object]" /><span
-                  >{{ sizeitem }}</span
-                ></label
-              >
-            </div>
-          </div>
-          <div class="add-to-cart-container">
-            <div class="add-to-cart-btns fixed">
-              <button
-                type="button"
-                id="product-addtocart-button"
-                title="Add to cart"
-                class="add-to-cart btn"
-              >
-                <i class="fa fa-shopping-basket"></i>
-                Add to cart
-              </button>
-              <button
-                type="button"
-                id="buy-now"
-                title="Wishlist"
-                class="buy-now btn"
-              >
-                <i class="fa fa-heart-o"></i> WISHLIST
-              </button>
-            </div>
-            <p
-              class="font-medium"
-              style="color: #02bb02; font-size: 12px; padding-top: 10px"
-            >
-              {{ result.stock_status }}
-            </p>
-          </div>
-          <div class="check-delivery">
-            <label>Delivery pin </label>
-            <div class="control">
-              <div class="pin-change-wrap">
-                <input
-                  type="text"
-                  maxlength="6"
-                  placeholder="Check pincode"
-                  value=""
-                  class="input-text"
-                />
+                <img  :src="image.image" :data-src="image.image" />
               </div>
             </div>
-          </div>
-          <div class="other-info">
-            <h3 class="font-medium">KNOW YOUR MAKEUP</h3>
-            <p class="description mt-2 mb-3">
-              {{ result.description }}
-            </p>
-            <div id="show_hide_product_attr_type" v-show="visibility">
-              <ul>
-                <li
-                  v-for="(item, i) in result.visible_attributes"
+          </client-only>
+          <div class="col-md-5 col-sm-12 content-section pdp__maininfo">
+            <h1 class="page-title">{{ result.name }}</h1>
+            <p class="masterSku">SKU: {{ result.sku }}</p>
+            <div class="price">
+              <p>
+                <span class="font-medium pr-2">
+                  &#8377;{{ result.selling_price }}</span
+                >
+                <span class="old-price">&#8377;{{ result.price }}</span>
+              </p>
+              <p class="mrp-message">inclusive of all taxes</p>
+            </div>
+            <div class="size-container">
+              <p class="mrp-message">SELECT SIZE</p>
+              <div class="size-box">
+                <label
+                  class="size select-one-size selected"
+                  v-for="(sizeitem, i) in sizeChart"
                   :key="i"
                 >
-                  <span class="label font-medium">{{ item.label }}</span>
-                  <span data-th="Quantity" class="data">{{ item.value }}</span>
-                </li>
-              </ul>
+                  <input
+                    type="radio"
+                    name="size"
+                    value="[object Object]"
+                  /><span>{{ sizeitem }}</span></label
+                >
+              </div>
             </div>
-            <a class="show_more_attr" @click="changevisible()"
-              ><span> {{ moreDetail ? "More" : "Less" }}</span> Details <span :class="[moreDetail ? 'arrow down' : 'arrow up']"></span></a
-            >
+            <div class="add-to-cart-container">
+              <div class="add-to-cart-btns fixed">
+                <button
+                  type="button"
+                  id="product-addtocart-button"
+                  title="Add to cart"
+                  class="add-to-cart btn"
+                >
+                  <i class="fa fa-shopping-basket"></i>
+                  Add to cart
+                </button>
+                <button
+                  type="button"
+                  id="buy-now"
+                  title="Wishlist"
+                  class="buy-now btn"
+                >
+                  <i class="fa fa-heart-o"></i> WISHLIST
+                </button>
+              </div>
+              <p
+                class="font-medium"
+                style="color: #02bb02; font-size: 12px; padding-top: 10px"
+              >
+                {{ result.stock_status }}
+              </p>
+            </div>
+            <div class="check-delivery">
+              <label>Delivery pin </label>
+              <div class="control">
+                <div class="pin-change-wrap">
+                  <input
+                    type="text"
+                    maxlength="6"
+                    placeholder="Check pincode"
+                    value=""
+                    class="input-text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="other-info">
+              <h3 class="font-medium">KNOW YOUR MAKEUP</h3>
+              <p class="description mt-2 mb-3">
+                {{ result.description }}
+              </p>
+              <div id="show_hide_product_attr_type" v-show="visibility">
+                <ul>
+                  <li v-for="(item, i) in result.visible_attributes" :key="i">
+                    <span class="label font-medium">{{ item.label }}</span>
+                    <span data-th="Quantity" class="data">{{
+                      item.value
+                    }}</span>
+                  </li>
+                </ul>
+              </div>
+              <a class="show_more_attr" @click="changevisible()"
+                ><span> {{ moreDetail ? "More" : "Less" }}</span> Details
+                <span :class="[moreDetail ? 'arrow down' : 'arrow up']"></span
+              ></a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="product-slider product-slider-similar">
-        <div class="product-section-main">
-          <div class="similar-products">
-            <h4 class="font-medium similar-head">Similar Products</h4>
-            <div class="product-container">
-              <ClientOnly>
-                <vueSlickcarousel
-                  v-bind="slickOptions"
-                  v-if="result.id_product"
-                >
-                  <div
-                    class="slide-box"
-                    v-for="(item, index) in result.similar_products"
-                    :key="index"
+        <div class="product-slider product-slider-similar">
+          <div class="product-section-main">
+            <div class="similar-products">
+              <h4 class="font-medium similar-head">Similar Products</h4>
+              <div class="product-container">
+                <ClientOnly>
+                  <vueSlickcarousel
+                    v-bind="slickOptions"
+                    v-if="result.id_product"
                   >
-                    <div class="product-box">
-                      <nuxt-link :to="item.url_key">
-                        <div class="image-single">
-                          <img :src="item.image" alt="" />
+                    <div
+                      class="slide-box"
+                      v-for="(item, index) in result.similar_products"
+                      :key="index"
+                    >
+                      <div class="product-box">
+                        <nuxt-link :to="'/products/' + item.url_key">
+                          <div class="image-single">
+                            <img :src="item.image" alt="" />
+                          </div>
+                        </nuxt-link>
+                      </div>
+                      <div class="product-info">
+                        <p class="product-name">{{ item.name }}</p>
+                        <div class="price-slider">
+                          <p>
+                            <span class="price"
+                              >Rs.{{ item.selling_price }}</span
+                            >
+                          </p>
                         </div>
-                      </nuxt-link>
-                    </div>
-                    <div class="product-info">
-                      <p class="product-name">{{ item.name }}</p>
-                      <div class="price-slider">
-                        <p>
-                          <span class="price">Rs.{{ item.selling_price }}</span>
-                        </p>
                       </div>
                     </div>
-                  </div>
-                </vueSlickcarousel>
-              </ClientOnly>
+                  </vueSlickcarousel>
+                </ClientOnly>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 import axios from "axios";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import vueSlickcarousel from "vue-slick-carousel";
-import Vue from 'vue'
-import lightgallery from 'lightgallery.js'
-import 'lightgallery.js/dist/css/lightgallery.css';
 
-Vue.use(lightgallery)
 export default {
   components: {
     vueSlickcarousel,
   },
   data() {
     return {
-      loading:true,
+      loading: true,
       sizeChart: null,
       result: [],
       itemurl: null,
@@ -208,6 +209,13 @@ export default {
         this.moreDetail = true;
       }
     },
+    gallerycontrol() {
+      console.log("kjskcab");
+      lightGallery(document.getElementById("lightgallery"), {
+        download: false,
+        selector: "img",
+      });
+    },
   },
   async fetch() {
     try {
@@ -228,60 +236,66 @@ export default {
         this.sizeChart = this.result.size.match(regex);
         console.log(this.$route.params.Product);
         console.log(this.result);
+        // if(process.client){
+
+        // }
       }
     } catch (err) {
       console.error(err);
     }
   },
-  mounted () {
+  mounted() {
     setTimeout(() => {
-      this.loading = false
-    }, 500)
-  }
+      this.loading = false;
+    }, 500);
+    setTimeout(() => {
+      this.gallerycontrol();
+    }, 500);
+  },
 };
 </script>
 <style>
 /******************************** BreadCrumb-Design *****************************************/
-.loader{
+.loader {
   width: 100vw;
   height: 100vh;
   opacity: 0.8;
   margin: auto;
 }
 .breadcrumb {
-
   padding-top: 20px !important;
-    border-radius: inherit;
-    padding: 10px 25px;
-    background: transparent;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
+  border-radius: inherit;
+  padding: 10px 25px;
+  background: transparent;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
 }
 .breadcrumb li {
-    font-size: 14px;
+  font-size: 14px;
 }
 .breadcrumb li.breadcrumb-item a {
-    color: #333;
-    text-transform: capitalize;
-    font-size: 12px;
+  color: #333;
+  text-transform: capitalize;
+  font-size: 12px;
 }
-a, a:hover {
-    color: #000;
+a,
+a:hover {
+  color: #000;
 }
-.breadcrumb-item+.breadcrumb-item:before {
-    display: inline-block;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    color: #6c757d;
-    content: "/";
+.breadcrumb-item + .breadcrumb-item:before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  color: #6c757d;
+  content: "/";
 }
 .breadcrumb li.breadcrumb-item.active {
-    color: #000;
-    text-transform: capitalize;
-    font-family: "Jost-medium";
-    width: auto;
+  color: #000;
+  text-transform: capitalize;
+  font-family: "Jost-medium";
+  width: auto;
 }
 
 /*******************************Product Design************************************/
@@ -341,7 +355,6 @@ a, a:hover {
 .product-detail-container .price p {
   font-size: 35px;
   margin: 0;
-
 }
 p {
   margin-top: 0;
@@ -452,7 +465,7 @@ input[type="radio"] {
 }
 #product-addtocart-button .fa.fa-shopping-basket {
   font-size: 0;
-  background-image: url(../static/Img/shopping-bag.svg);
+  background-image: url(../../static/Img/shopping-bag.svg);
   background-repeat: no-repeat;
   height: 21px;
   width: 22px;
@@ -465,7 +478,7 @@ input[type="radio"] {
 }
 #buy-now .fa.fa-heart-o {
   font-size: 0;
-  background-image: url(../static/Img/Heart.svg);
+  background-image: url(../../static/Img/Heart.svg);
   background-repeat: no-repeat;
   height: 21px;
   width: 22px;
@@ -504,7 +517,7 @@ input[type="radio"] {
   font-family: "Jost-medium";
   color: #444;
 }
-.control{
+.control {
   margin-top: 0.8rem;
 }
 .pin-change-wrap {
@@ -558,9 +571,9 @@ input[type="radio"] {
   float: left;
   width: 100%;
   overflow: hidden;
-  margin-bottom: 1rem!important;
-    margin-top: 0.5rem!important;
-    line-height: 1.2rem;
+  margin-bottom: 1rem !important;
+  margin-top: 0.5rem !important;
+  line-height: 1.2rem;
 }
 #show_hide_product_attr_type {
   transition: all 0.5s;
@@ -620,7 +633,6 @@ input[type="radio"] {
   border-width: 0 1px 1px 0;
   display: inline-block;
   padding: 3px;
-  
 }
 .up {
   transform: rotate(-135deg);
@@ -673,12 +685,12 @@ input[type="radio"] {
 }
 .product-slider-similar .slick-slider .slick-next,
 .product-slider-similar .slick-slider .slick-prev {
-  background-color: transparent ;
-  position: absolute ;
+  background-color: transparent;
+  position: absolute;
   border: none;
   top: 39%;
   font-size: 0 !important;
-  background-image: url(../static/Img/smilir-slide-icon.svg) !important;
+  background-image: url(../../static/Img/smilir-slide-icon.svg) !important;
   background-repeat: no-repeat !important;
   background-size: 40px !important;
   cursor: pointer !important;
@@ -703,9 +715,30 @@ input[type="radio"] {
 .slide-box .product-name {
   margin-bottom: 10px !important;
 }
-.price-slider{
+.price-slider {
   margin: 0;
   padding: 0;
+}
+.lg-toolbar {
+    background-color: rgba(0,0,0,0) !important;
+}
+.lg-outer.lg-visible {
+  background-color: #fff !important;
+    width: 50% !important;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 90%;
+    border-radius: 12px;
+}
+.lg-toolbar .lg-icon:hover {
+    color: #000;
+}
+.lg-actions .lg-next:hover, .lg-actions .lg-prev:hover {
+    color: #000;
+}
+.lg-backdrop.in {
+    opacity: 0.5 !important;
 }
 @media only screen and (min-width: 576px) {
   .product-slider-similar {

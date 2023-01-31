@@ -3,7 +3,7 @@
     <div class="new-class" v-for="(item, index) in Productsitem" :key="index">
       <div class="slide-box">
         <div class="product-box">
-          <nuxt-link :to="item.url_key">
+          <nuxt-link :to="'/products/' + item.url_key">
             <div class="image-single">
               <img :src="item.image" alt="" />
             </div>
