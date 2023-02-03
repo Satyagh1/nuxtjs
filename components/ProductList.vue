@@ -23,7 +23,7 @@
       </div>
 </div>
 <div
-      class="loader"
+      class="loaderproduct"
       v-show="dataCountFlag"
       v-observe-visibility="handleScroll"
     >
@@ -99,7 +99,7 @@ span.price {
   color: #4c0b36 !important;
   font-family: Jost-medium;
 }
-.loader {
+.loaderproduct {
   width: 100%;
   display: flex;
   justify-content: center;

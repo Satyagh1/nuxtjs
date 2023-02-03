@@ -2,6 +2,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'first_nuxt',
+    store: './store/store.js',
     htmlAttrs: {
       lang: 'en'
     },
@@ -23,7 +24,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: "~/plugins/lightGallery.client.js", ssr: false, mode: 'client'  }
+    { src: "~/plugins/lightGallery.client.js", ssr: false, mode: 'client'  },
+    { src: "~/plugins/store.js"  }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

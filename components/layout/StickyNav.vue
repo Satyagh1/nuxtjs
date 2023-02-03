@@ -69,9 +69,9 @@
               <a href=""><img src="../../static/Img/Heart.svg" alt="" ></a>
             </li>
             <li>
-              <a href=""><img src="../../static/Img/shopping-bag.svg" alt="" >
-              <span class="counter-number">0</span>
-              </a>
+              <nuxt-link to="/cart"><img src="../../static/Img/shopping-bag.svg" alt="" >
+              <span class="counter-number">{{ length }}</span>
+              </nuxt-link>
             </li>
           </ul>
         </div>
@@ -80,8 +80,12 @@
   </nav>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "StickyNav",
+  computed: mapState({
+    length: (state) => state.cart.items.length,
+  }),
   data() {
     return {
       checktoggle: false,

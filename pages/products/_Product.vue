@@ -61,6 +61,7 @@
                   id="product-addtocart-button"
                   title="Add to cart"
                   class="add-to-cart btn"
+                  @click="addToCart(product)"
                 >
                   <i class="fa fa-shopping-basket"></i>
                   Add to cart
@@ -162,6 +163,7 @@
 </template>
 <script>
 import axios from "axios";
+import { mapActions } from 'vuex'
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import vueSlickcarousel from "vue-slick-carousel";
@@ -183,7 +185,7 @@ export default {
         arrow: false,
         infinite: true,
         speed: 1000,
-        autoplay: false,
+        autoplay: true,
         slidesToShow: 4,
         slidesToScroll: 1,
         loop: true,
@@ -198,8 +200,17 @@ export default {
       },
     };
   },
-
+  computed: {
+    product() {
+ 
+      return   Object.assign({},this.result,{qty:1})
+    }
+  },
   methods: {
+  ...mapActions({
+    
+    addToCart: 'cart/addToCart'
+  }),
     changevisible() {
       if (!this.visibility) {
         this.visibility = true;
@@ -232,6 +243,7 @@ export default {
           }
         );
         this.result = response.data.result;
+        
         let regex = /(\d+)/g;
         this.sizeChart = this.result.size.match(regex);
         console.log(this.$route.params.Product);
@@ -247,10 +259,10 @@ export default {
   mounted() {
     setTimeout(() => {
       this.loading = false;
-    }, 500);
+    }, 800);
     setTimeout(() => {
       this.gallerycontrol();
-    }, 500);
+    }, 600);
   },
 };
 </script>
@@ -259,8 +271,15 @@ export default {
 .loader {
   width: 100vw;
   height: 100vh;
-  opacity: 0.8;
+  opacity:1;
   margin: auto;
+}
+.loader img{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
 }
 .breadcrumb {
   padding-top: 20px !important;
