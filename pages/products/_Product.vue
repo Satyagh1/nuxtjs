@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div class="loader" v-if="loading">
-      <img src="../../static/Img/giphy.gif" alt="" />
-    </div>
+    <div v-if="$fetchState.pending" class="loader"><img src="../../static/Img/giphy.gif" alt="" /></div>
+    <p v-else-if="$fetchState.error">An error occurred </p>
     <div v-else>
       <nav class="detail-page-breadcrumb" style="">
         <ol class="breadcrumb">
@@ -174,7 +173,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       sizeChart: null,
       result: [],
       itemurl: null,
@@ -194,6 +192,7 @@ export default {
             breakpoint: 768,
             settings: {
               slidesToShow: 2,
+              dots:true
             },
           },
         ],
@@ -257,13 +256,8 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 800);
-    setTimeout(() => {
       this.gallerycontrol();
-    }, 600);
-  },
+  }
 };
 </script>
 <style>
@@ -778,6 +772,9 @@ input[type="radio"] {
     width: 100%;
     padding: 0;
   }
+  .lg-outer.lg-visible {
+    width: 100% !important;
+}
   .product-slider-similar .slick-next.slick-arrow {
     right: -18px;
     transform: translateY(-50%) rotate(179deg);

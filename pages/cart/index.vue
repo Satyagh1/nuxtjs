@@ -19,7 +19,7 @@
               <th class="subtotal font-medium"><span>Subtotal</span></th>
             </tr>
           </thead>
-          <tbody class="cart-item" v-for="item in items" :key="item.id">
+          <tbody class="cart-item" v-for="(item,index) in items" :key="index">
             <tr class="item-info">
               <td class="item">
                 <div class="row">
@@ -56,19 +56,18 @@
               <td class="qty">
                 <div class="control">
                   <div class="qty_box">
-                    <a href="#" class="disabled"><i class="fa fa-minus"></i></a
+                    <a @click="updateqtymin(item)" :class="[$store.state.cart.itemsqty ? 'disabled' : '']"><img src="../../static/Img/minus-sign.png" alt=""></a
                     ><input
                       type="text"
                       readonly="readonly"
                       :value="item.qty"
-                    /><a href="#" class="disabled"
-                      ><i class="fa fa-plus"></i
-                    ></a>
+                    /><a class="" @click="updateqtyplus(item)"
+                      ><img src="../../static/Img/plus.png" alt=""></a>
                   </div>
                 </div>
               </td>
               <td class="discount">
-                <p class="text-center">{{ item.discount }}%</p>
+                <p class="text-center">{{ item.discount }}%{{ $store.state.cart.itemsqty }}</p>
               </td>
               <td class="subtotal">
                 <p>
@@ -115,9 +114,6 @@
                   >
                 </td>
               </tr>
-              <!---->
-              <!---->
-              <!---->
               <tr class="grand totals">
                 <th class="font-bold"><strong>Order Total</strong></th>
                 <td class="amount font-bold">
@@ -157,8 +153,11 @@ import { mapState, mapActions } from "vuex";
 export default {
   computed: mapState({
     items: (state) => state.cart.items,
-  }),
+    itemsqty:(state) => state.cart.itemsqty
+}),
   methods: mapActions({
+    updateqtyplus:"cart/updateqtyplus",
+    updateqtymin:"cart/updateqtymin",
     removeFromCart: "cart/removeFromCart",
   }),
 };
@@ -277,6 +276,26 @@ a.item-photo {
     display: flex;
     justify-content: center;
 }
+.cart-container .cart-table .continue {
+    background: transparent;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    color: #000;
+    text-transform: none;
+    font-size: 13px;
+    padding: 10px 15px 8px;
+    font-family: "Jost-medium";
+    text-decoration: none;
+    cursor: pointer;
+    float: right;
+    text-transform: uppercase;
+    margin-top: 15px;
+}
+.giftContainer {
+    font-family: "Jost-medium";
+    color: #000;
+    font-size: 14px;
+}
 .cart-item .item-photo img {
   max-width: 60%;
 }
@@ -314,6 +333,7 @@ img {
 }
 
 .cart-item .qty_box a {
+  cursor: pointer;
   padding: 5px 9px;
   border: 1px solid #ccc;
   vertical-align: top;
@@ -324,8 +344,7 @@ img {
   font-size: 12px;
   display: inline-block;
 }
-.cart-item .qty_box a.disabled,
-.cart-item .qty_box a.max_disabled {
+.cart-item .qty_box a.disabled{
   opacity: 0.2;
   cursor: no-drop;
 }
@@ -341,6 +360,9 @@ img {
   cursor: default;
   font-family: "Jost-medium";
   text-transform: uppercase;
+}
+.qty_box img{
+  width: 10px;
 }
 .cart-summary .checkout-container .checkout {
   border: none;

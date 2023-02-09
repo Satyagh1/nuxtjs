@@ -305,7 +305,8 @@ span.counter-number {
         top: 0;
     }
     span.counter-number {
-          right:7%;
+      right: 15%;
+      top:60%;
     }
 
 
