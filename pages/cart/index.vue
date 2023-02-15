@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="row" v-if="items.some((e) => e.id_product != undefined)">
-      <div class="col-9 cart-table">
+      <div class="col-9 cart-table" style="overflow-x:auto;">
         <!---->
         <!---->
         <table class="cart table">
@@ -67,7 +67,7 @@
                 </div>
               </td>
               <td class="discount">
-                <p class="text-center">{{ item.discount }}%{{ $store.state.cart.itemsqty }}</p>
+                <p class="text-center">{{ item.discount }}%</p>
               </td>
               <td class="subtotal">
                 <p>
@@ -119,7 +119,7 @@
                 <td class="amount font-bold">
                   <strong
                     ><span class="price"
-                      >&#8377;<span class="sub_total">215000</span></span
+                      >&#8377;<span class="sub_total">21500</span></span
                     ></strong
                   >
                 </td>
@@ -381,4 +381,26 @@ img {
       padding: 11px;
       border-radius: 5px;
   }
+  @media only screen and (max-width: 768px) {
+    .cart-container {
+    padding: 0px !important;
+}
+.row{
+  margin: 0;
+}
+    .cart-summary {
+    padding: 15px;
+    flex: 0 0 100%;
+    max-width: 100%;
+    background-color: #fafafa;
+}
+.cart-container .cart-table {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.table {
+    width: 180%;
+    max-width: 180%;
+}
+}
 </style>

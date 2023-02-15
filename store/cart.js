@@ -38,7 +38,6 @@ export const mutations = {
     else {
       item.qty--
     }
-    console.log(state.itemsqty,"secondnddckjnjcnk");
   }
 }
 

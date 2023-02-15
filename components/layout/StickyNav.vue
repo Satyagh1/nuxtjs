@@ -323,7 +323,7 @@ span.counter-number {
       width: 70px !important;
         height: auto;
         top: 4px !important;
-        padding: 8px 17px;
+        padding: 18px 16px 0px;
         position: relative;
     }
 

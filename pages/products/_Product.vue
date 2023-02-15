@@ -183,7 +183,7 @@ export default {
         arrow: false,
         infinite: true,
         speed: 1000,
-        autoplay: true,
+        autoplay: false,
         slidesToShow: 4,
         slidesToScroll: 1,
         loop: true,
