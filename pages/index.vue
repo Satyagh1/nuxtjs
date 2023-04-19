@@ -96,8 +96,8 @@
       <div
         :class="[
           !isOpen
-            ? 'sidebar-filter d-none '
-            : 'sidebar-filter hidefilter d-none ',
+            ? 'sidebar-filter for-desktop '
+            : 'sidebar-filter hidefilter for-desktop ',
         ]"
       >
         <div class="container mobileFilterSection for-mobile">
@@ -1060,7 +1060,7 @@ li.women label {
   }
   a.filter-box {
     font-size: 14px;
-    padding-top: 0px;
+    padding-top: 0px; 
     padding-bottom: 0px;
     padding-left: 0px;
     border-bottom: 0px solid #e9e9ed;

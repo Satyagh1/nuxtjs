@@ -54,8 +54,11 @@ a {
 .for-mobile{
     display: none;
 }
+.for-desktop{
+    display: block;
+}
 .active{
-    width: 100%;
+    width: 100% !important;
     transition: 0.5s all ease-out;
 }
 *, :after, :before {
@@ -70,6 +73,9 @@ a {
     }
     .for-mobile{
         display: block !important;
+    }
+    .for-desktop{
+        display: none;
     }
     .heading {
         font-size: 18px!important;
